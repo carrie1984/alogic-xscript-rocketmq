@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<script>
+<using xmlTag="consumer-conn" module="com.alogic.xscript.rocketmq.RMQConsumerConn" />
+<consumer-conn server="127.0.0.1:9876" topic="test" delimeter=";" consumerGroup="TestConsumer" tags="*"> 
+	<receive size="1"></receive>
+</consumer-conn>
+</script>

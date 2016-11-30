@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<script>
+<using xmlTag="prod-conn" module="com.alogic.xscript.rocketmq.RMQProdConn" />
+<using xmlTag="consumer-conn" module="com.alogic.xscript.rocketmq.RMQConsumerConn" />
+<prod-conn server="127.0.0.1:9876" producerGroup="TestProducer">
+	<send topic="test" tags="" key="" data="hello"></send>
+	<send topic="test" tags="" key="" data="hahhaha"></send>
+	<send topic="test" tags="" key="" data="hohoho"></send>
+</prod-conn>
+<consumer-conn server="127.0.0.1:9876" topic="test" delimeter=";" consumerGroup="TestConsumer" tags="*"> 
+	<receive size="2"></receive>
+</consumer-conn>
+</script>
+
