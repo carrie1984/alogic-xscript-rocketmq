@@ -1,12 +1,12 @@
 package com.alogic.xscript.rocketmq;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.rocketmq.common.TopicConfig;
 import com.alibaba.rocketmq.common.admin.TopicStatsTable;
-import com.alibaba.rocketmq.common.constant.PermName;
 import com.alibaba.rocketmq.common.protocol.route.TopicRouteData;
 import com.alogic.xscript.AbstractLogiclet;
 import com.alogic.xscript.ExecuteWatcher;
@@ -16,15 +16,19 @@ import com.alogic.xscript.rocketmq.util.MQAdminConnector;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
-public class RMQUpdateTopic extends RMQAdminOperation{
+/**
+ * 描述指定topic信息
+ * 
+ * @author weibj
+ *
+ */
+public class RMQDescTopic extends RMQAdminOperation {
 	protected String topic = "";
-	protected String addr = "";
-	protected int readQueueNums = 16;
-	protected int writeQueueNums = 16;
-	protected int perm = PermName.PERM_READ | PermName.PERM_WRITE;
+	protected String type = "status";
 	protected boolean ignoreException;
+	protected String tag = "data";
 
-	public RMQUpdateTopic(String tag, Logiclet p) {
+	public RMQDescTopic(String tag, Logiclet p) {
 		super(tag, p);
 	}
 
@@ -33,10 +37,8 @@ public class RMQUpdateTopic extends RMQAdminOperation{
 		super.configure(p);
 
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
-		addr = PropertiesConstants.getRaw(p, "addr", addr);
-		readQueueNums=PropertiesConstants.getInt(p, "readQueueNums", readQueueNums);
-		writeQueueNums=PropertiesConstants.getInt(p, "writeQueueNums", writeQueueNums);
-		perm=PropertiesConstants.getInt(p, "perm", perm);
+		type = PropertiesConstants.getRaw(p, "type", type);
+		tag = PropertiesConstants.getRaw(p, "tag", tag);
 		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
 	}
 
@@ -44,14 +46,21 @@ public class RMQUpdateTopic extends RMQAdminOperation{
 	protected void onExecute(MQAdminConnector adminConn, Map<String, Object> root, Map<String, Object> current,
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		String topicValue = ctx.transform(topic).trim();
-		TopicConfig config = new TopicConfig();
-		config.setTopicName(topicValue);
-		config.setPerm(perm);
-		config.setReadQueueNums(readQueueNums);
-		config.setWriteQueueNums(writeQueueNums);
 
 		if (StringUtils.isNotEmpty(topicValue)) {
-			adminConn.createAndUpdateTopic(addr, config, ignoreException);
+			switch (type) {
+			case "status":
+				TopicStatsTable table = adminConn.topicStatus(topicValue, ignoreException);
+				root.put(tag, table.toJson());
+				break;
+			case "route":
+				TopicRouteData route = adminConn.topicRoute(topicValue, ignoreException);
+				root.put(tag, route.toJson());
+				break;
+			default:
+				break;
+			}
 		}
 	}
+
 }

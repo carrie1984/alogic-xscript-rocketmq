@@ -127,10 +127,8 @@ public class ConsumerConnector {
 				if (list != null) {
 					for (MessageExt msg : list) {
 						result.add(new String(msg.getBody()));
-						System.out.println(new String(msg.getBody()));
 					}
 				}
-				System.out.println(pullResult.getNextBeginOffset());
 				putMessageQueueOffset(mq, pullResult.getNextBeginOffset());
 			}
 			return result;
@@ -138,14 +136,14 @@ public class ConsumerConnector {
 			if (!ignoreException)
 				throw new BaseException("rmq.ClientException", e.getMessage(), e);
 		} catch (RemotingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (!ignoreException)
+				throw new BaseException("rmq.RemotingException", e.getMessage(), e);
 		} catch (MQBrokerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (!ignoreException)
+				throw new BaseException("rmq.BrokerException", e.getMessage(), e);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (!ignoreException)
+				throw new BaseException("rmq.InterruptedException", e.getMessage(), e);
 		}
 		return null;
 	}
@@ -157,7 +155,6 @@ public class ConsumerConnector {
 	private static long getMessageQueueOffset(MessageQueue mq) {
 		Long offset = offseTable.get(mq);
 		if (offset != null) {
-			System.out.println(offset);
 			return offset;
 		}
 		return 0;

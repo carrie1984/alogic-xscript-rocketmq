@@ -2,23 +2,26 @@ package com.alogic.xscript.rocketmq;
 
 import java.util.Map;
 
-import com.alogic.xscript.AbstractLogiclet;
 import com.alogic.xscript.ExecuteWatcher;
 import com.alogic.xscript.Logiclet;
 import com.alogic.xscript.LogicletContext;
 import com.alogic.xscript.plugins.Segment;
+import com.alogic.xscript.rocketmq.util.MQAdminConnector;
 import com.alogic.xscript.rocketmq.util.ProduerConnector;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
-public class RMQProdConn extends Segment{
-	protected String cid = "$prod-conn";
-	protected String server = "${server}";
-	protected String producerGroup = "${producer.group}";
+public class RMQAdminConn extends Segment{
+	protected String cid = "$admin-conn";
+	protected String server = "${connectString}";
 	
-	public RMQProdConn(String tag, Logiclet p) {
+	public RMQAdminConn(String tag, Logiclet p) {
 		super(tag, p);	
-		registerModule("send",RMQSend.class);
+		registerModule("create-topic",RMQUpdateTopic.class);
+		registerModule("alter-topic",RMQUpdateTopic.class);
+		registerModule("list-topic",RMQListTopic.class);
+		registerModule("del-topic",RMQDelTopic.class);
+		registerModule("desc-topic",RMQDescTopic.class);
 	}
 
 	@Override
@@ -27,13 +30,12 @@ public class RMQProdConn extends Segment{
 		
 		cid = PropertiesConstants.getString(p,"cid",cid,true);
 		server = PropertiesConstants.getString(p,"server",server,true);
-		producerGroup = PropertiesConstants.getString(p,"producerGroup",producerGroup,true);
 	}
 	
 	@Override
 	protected void onExecute(Map<String, Object> root,
 			Map<String, Object> current, LogicletContext ctx, ExecuteWatcher watcher) {
-		ProduerConnector conn = new ProduerConnector(ctx,server,producerGroup);
+		MQAdminConnector conn = new MQAdminConnector(ctx,server);
 		try {
 			ctx.setObject(cid, conn);
 			super.onExecute(root, current, ctx, watcher);
@@ -42,4 +44,5 @@ public class RMQProdConn extends Segment{
 			conn.disconnect();
 		}
 	}
+
 }

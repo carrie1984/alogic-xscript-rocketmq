@@ -18,7 +18,7 @@ public class TestAdmin {
 			MQClientAPIImpl impl = mq.getMQClientAPIImpl();
 			MQAdminImpl admin = mq.getMQAdminImpl();
 			TopicConfig con = new TopicConfig("testCreate");
-			admin.createTopic("test", "testCreate11", 1);
+			admin.createTopic("", "testCreate11", 1);
 			System.out.println("哇！创建成功啦~~");
 			mq.shutdown();
 		} catch (MQClientException e) {
