@@ -112,6 +112,7 @@ public class ProduerConnector {
 		try {
 			Message msg = new Message(topic, tags, key, data.getBytes());
 			SendResult sendResult = producer.send(msg);
+			System.out.println("+++++++++++++++"+sendResult.toString());
 			return sendResult.toString();
 		} catch (MQClientException e) {
 			if (!ignoreException)

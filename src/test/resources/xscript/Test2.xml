@@ -8,7 +8,7 @@
 	<desc-topic topic="testXscript" type="status"></desc-topic>
 	<desc-topic topic="testXscript" type="route"></desc-topic>
 	<alter-topic topic="testXscript" perm="2" readQueueNums="2" writeQueueNums="2" addr="127.0.0.1:10911"></alter-topic>
-	<desc-topic topic="testXscript" type="status"></desc-topic>
+	<desc-topic topic="testXscript" type="status" tag="descTopic"></desc-topic>
 	<del-topic topic="testXscript"></del-topic>
 	<list-topic></list-topic>
 </admin-conn>

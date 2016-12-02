@@ -44,6 +44,7 @@ public class ConsumerConnector {
 	protected String consumerGroup = "${consumer.group}";
 	protected String tag = "${tags}";
 	protected String topic = "${topic}";
+	protected String type = "push";
 
 	// Java缓存
 	private static final Map<MessageQueue, Long> offseTable = new HashMap<MessageQueue, Long>();
@@ -51,20 +52,25 @@ public class ConsumerConnector {
 	/**
 	 * Consumer
 	 */
-	protected DefaultMQPullConsumer consumer = null;
+	protected DefaultMQPullConsumer pullConsumer = null;
+	protected DefaultMQPushConsumer pushConsumer = null;
 
 	public ConsumerConnector(Properties props) {
 		server = PropertiesConstants.getString(props, "server", server);
+		tag = PropertiesConstants.getString(props, "tag", tag);
+		topic = PropertiesConstants.getString(props, "topic", topic);
+		type = PropertiesConstants.getString(props, "type", type);
 		consumerGroup = PropertiesConstants.getString(props, "consumerGroup", consumerGroup);
 
 		connect();
 	}
 
-	public ConsumerConnector(Properties props, String servers, String topics, String consumerGroups, String tags) {
+	public ConsumerConnector(Properties props, String servers, String topics, String consumerGroups, String tags,String types) {
 		server = servers;
 		consumerGroup = consumerGroups;
 		topic = topics;
 		tag = tags;
+		type = types;
 
 		connect();
 	}
@@ -73,9 +79,26 @@ public class ConsumerConnector {
 	 * 连接Consumer
 	 */
 	public void connect() {
-		consumer = new DefaultMQPullConsumer();
-		consumer.setNamesrvAddr(server);
-		consumer.setConsumerGroup(consumerGroup);
+		switch (type) {
+		case "pull":
+			pullConsumer = new DefaultMQPullConsumer();
+			pullConsumer.setNamesrvAddr(server);
+			pullConsumer.setConsumerGroup(consumerGroup);
+			break;
+		case "push":
+			pushConsumer = new DefaultMQPushConsumer();
+			pushConsumer.setNamesrvAddr(server);
+			pushConsumer.setConsumerGroup(consumerGroup);
+			try {
+				pushConsumer.subscribe(topic, "*");
+			} catch (MQClientException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -83,8 +106,18 @@ public class ConsumerConnector {
 	 */
 	public void disconnect() {
 		if (isConnected()) {
-			consumer.shutdown();
-			consumer = null;
+			switch (type) {
+			case "pull":
+				pullConsumer.shutdown();;
+				pullConsumer=null;
+				break;
+			case "push":
+				pushConsumer.shutdown();;
+				pushConsumer=null;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -94,7 +127,14 @@ public class ConsumerConnector {
 	 * @return true|false
 	 */
 	public boolean isConnected() {
-		return consumer != null;
+		switch (type) {
+		case "pull":
+			return pullConsumer != null;
+		case "push":
+			return pushConsumer != null;
+		default:
+			return false;
+		}
 	}
 
 	/**
@@ -104,8 +144,22 @@ public class ConsumerConnector {
 		disconnect();
 		connect();
 	}
+	
+	/**
+	 * 返回push模式Consumer
+	 * @return
+	 */
+	public DefaultMQPushConsumer getPushConsumer()
+	{
+		return pushConsumer;
+	}
+	
+	public String getCurrentType()
+	{
+		return type;
+	}
 
-	public List<String> receiveMsg(int size, boolean ignoreException) {
+	public List<String> receivePullMsg(int size, boolean ignoreException) {
 		if (!isConnected()) {
 			if (!ignoreException)
 				throw new BaseException("consumer.noconn", "the consumer is not connected.");
@@ -116,13 +170,13 @@ public class ConsumerConnector {
 		List<String> result = new ArrayList<String>();
 
 		try {
-			consumer.start();
-			Set<MessageQueue> messageQueues = consumer.fetchSubscribeMessageQueues(topic);
+			pullConsumer.start();
+			Set<MessageQueue> messageQueues = pullConsumer.fetchSubscribeMessageQueues(topic);
 
 			for (MessageQueue mq : messageQueues) {
 
 				PullResult pullResult;
-				pullResult = consumer.pull(mq, null, getMessageQueueOffset(mq), size);
+				pullResult = pullConsumer.pull(mq, null, getMessageQueueOffset(mq), size);
 				List<MessageExt> list = pullResult.getMsgFoundList();
 				if (list != null) {
 					for (MessageExt msg : list) {

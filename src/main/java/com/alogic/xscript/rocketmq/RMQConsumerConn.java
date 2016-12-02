@@ -17,6 +17,7 @@ public class RMQConsumerConn extends Segment{
 	protected String consumerGroup = "${consumer.group}";
 	protected String topic = "${topic}";
 	protected String tag = "${tags}";
+	protected String type = "${type}";
 	
 	public RMQConsumerConn(String tag, Logiclet p) {
 		super(tag, p);	
@@ -32,18 +33,19 @@ public class RMQConsumerConn extends Segment{
 		topic = PropertiesConstants.getString(p,"topic",topic,true);
 		consumerGroup = PropertiesConstants.getString(p,"consumerGroup",consumerGroup,true);
 		tag = PropertiesConstants.getString(p,"tags",tag,true);
+		type = PropertiesConstants.getString(p,"type",type,true);
 	}
 	
 	@Override
 	protected void onExecute(Map<String, Object> root,
 			Map<String, Object> current, LogicletContext ctx, ExecuteWatcher watcher) {
-		ConsumerConnector conn = new ConsumerConnector(ctx,server,topic,consumerGroup,tag);
+		ConsumerConnector conn = new ConsumerConnector(ctx,server,topic,consumerGroup,tag,type);
 		try {
 			ctx.setObject(cid, conn);
 			super.onExecute(root, current, ctx, watcher);
 		}finally{
 			ctx.removeObject(cid);
-			conn.disconnect();
+			//conn.disconnect();
 		}
 	}
 }

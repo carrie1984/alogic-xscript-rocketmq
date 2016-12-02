@@ -7,10 +7,14 @@ import com.alogic.xscript.Logiclet;
 import com.alogic.xscript.LogicletContext;
 import com.alogic.xscript.plugins.Segment;
 import com.alogic.xscript.rocketmq.util.MQAdminConnector;
-import com.alogic.xscript.rocketmq.util.ProduerConnector;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
+/**
+ * RocketMQ的管理者
+ * @author weibj
+ *
+ */
 public class RMQAdminConn extends Segment{
 	protected String cid = "$admin-conn";
 	protected String server = "${connectString}";
