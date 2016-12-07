@@ -1,4 +1,4 @@
-package com.alogic.xscript.rocketmq;
+package com.alogic.xscript.rocketmq.admin;
 
 import java.util.ArrayList;
 import java.util.HashSet;

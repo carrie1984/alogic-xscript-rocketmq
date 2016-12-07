@@ -45,6 +45,7 @@ public class ConsumerConnector {
 	protected String tag = "${tags}";
 	protected String topic = "${topic}";
 	protected String type = "push";
+	protected String subExpression = "*";
 
 	// Java缓存
 	private static final Map<MessageQueue, Long> offseTable = new HashMap<MessageQueue, Long>();
@@ -60,6 +61,7 @@ public class ConsumerConnector {
 		tag = PropertiesConstants.getString(props, "tag", tag);
 		topic = PropertiesConstants.getString(props, "topic", topic);
 		type = PropertiesConstants.getString(props, "type", type);
+		subExpression = PropertiesConstants.getString(props, "subExpression", subExpression);
 		consumerGroup = PropertiesConstants.getString(props, "consumerGroup", consumerGroup);
 
 		connect();
@@ -90,9 +92,8 @@ public class ConsumerConnector {
 			pushConsumer.setNamesrvAddr(server);
 			pushConsumer.setConsumerGroup(consumerGroup);
 			try {
-				pushConsumer.subscribe(topic, "*");
+				pushConsumer.subscribe(topic, subExpression);
 			} catch (MQClientException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;

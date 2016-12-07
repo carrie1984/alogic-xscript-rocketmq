@@ -117,10 +117,10 @@ public class RMQReceive extends Segment implements MessageListenerConcurrently{
 			for (MessageExt msg : msgs) {
 				byte[] bytes = msg.getBody();
 				ctxPara.SetValue(id, new String(bytes));
-				//System.out.println(new String(bytes));
+				System.out.println(new String(bytes));
 				super.onExecute(rootPara, currentPara, ctxPara, watcherPara);
-				//JsonProvider provider = JsonProviderFactory.createProvider();
-				//System.out.println(provider.toJson(rootPara));				
+				JsonProvider provider = JsonProviderFactory.createProvider();
+				System.out.println(provider.toJson(rootPara));				
 			}
 			return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;	
 		}
