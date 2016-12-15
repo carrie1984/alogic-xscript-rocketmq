@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<script>
-<consumer-conn server="127.0.0.1:9876" topic="test" delimeter=";" consumerGroup="TestConsumer" tags="*" type="push"> 
-	<receive id="msg">
-		<get id="msg"></get>
-	</receive>
-</consumer-conn>
-</script>

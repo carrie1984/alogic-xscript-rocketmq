@@ -19,7 +19,7 @@ import com.anysoft.util.PropertiesConstants;
  *
  */
 public abstract class RMQAdminOperation extends AbstractLogiclet{
-protected String pid = "$admin-conn";
+	protected String pid = "$admin-conn";
 	
 	/**
 	 * 返回结果的id

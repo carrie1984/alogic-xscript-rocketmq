@@ -21,11 +21,15 @@ import com.anysoft.util.PropertiesConstants;
  *
  */
 public class RMQDelTopic extends RMQAdminOperation {
+	//主题名称
 	protected String topic = "";
+	//在broker还是nameServer删除主题
 	protected String type = "nameServer";
+	//服务器地址
 	protected String addrs = "";
+	//分隔符
 	protected String delimeter = ";";
-	protected boolean ignoreException;
+	protected boolean ignoreException = false;
 
 	public RMQDelTopic(String tag, Logiclet p) {
 		super(tag, p);
@@ -39,7 +43,7 @@ public class RMQDelTopic extends RMQAdminOperation {
 		type = PropertiesConstants.getRaw(p, "type", type);
 		addrs = PropertiesConstants.getRaw(p, "addrs", addrs);
 		delimeter = PropertiesConstants.getRaw(p, "delimeter", delimeter);
-		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
+		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", ignoreException);
 	}
 
 	@Override

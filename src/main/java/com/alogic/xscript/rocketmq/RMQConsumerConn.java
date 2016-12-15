@@ -15,9 +15,9 @@ public class RMQConsumerConn extends Segment{
 	protected String cid = "$consumer-conn";
 	protected String server = "${server}";
 	protected String consumerGroup = "${consumer.group}";
-	protected String topic = "${topic}";
-	protected String tag = "${tags}";
-	protected String type = "${type}";
+	protected String topic = "default";
+	protected String tag = "default";
+	protected String type = "default";
 	
 	public RMQConsumerConn(String tag, Logiclet p) {
 		super(tag, p);	

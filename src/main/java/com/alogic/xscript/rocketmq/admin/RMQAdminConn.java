@@ -16,8 +16,11 @@ import com.anysoft.util.PropertiesConstants;
  *
  */
 public class RMQAdminConn extends Segment{
+	//元素id
 	protected String cid = "$admin-conn";
-	protected String server = "${connectString}";
+	
+	//服务连接地址
+	protected String server = "${server}";
 	
 	public RMQAdminConn(String tag, Logiclet p) {
 		super(tag, p);	

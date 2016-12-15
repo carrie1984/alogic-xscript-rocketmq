@@ -50,7 +50,7 @@ public class RMQSend extends AbstractLogiclet{
 		tags = PropertiesConstants.getString(p, "tags", "");
 		key = PropertiesConstants.getString(p, "key", "");
 		data = PropertiesConstants.getString(p, "data", "");
-		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
+		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", ignoreException);
 	}
 
 	@Override

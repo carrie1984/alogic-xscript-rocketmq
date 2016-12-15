@@ -17,12 +17,17 @@ import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
 public class RMQUpdateTopic extends RMQAdminOperation{
+	//topic主题
 	protected String topic = "";
+	//broker或cluster地址
 	protected String addr = "";
+	//可读队列数
 	protected int readQueueNums = 16;
+	//可写队列数
 	protected int writeQueueNums = 16;
+	//新增topic的权限限制
 	protected int perm = PermName.PERM_READ | PermName.PERM_WRITE;
-	protected boolean ignoreException;
+	protected boolean ignoreException = false;
 
 	public RMQUpdateTopic(String tag, Logiclet p) {
 		super(tag, p);
@@ -37,7 +42,7 @@ public class RMQUpdateTopic extends RMQAdminOperation{
 		readQueueNums=PropertiesConstants.getInt(p, "readQueueNums", readQueueNums);
 		writeQueueNums=PropertiesConstants.getInt(p, "writeQueueNums", writeQueueNums);
 		perm=PropertiesConstants.getInt(p, "perm", perm);
-		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
+		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", ignoreException);
 	}
 
 	@Override

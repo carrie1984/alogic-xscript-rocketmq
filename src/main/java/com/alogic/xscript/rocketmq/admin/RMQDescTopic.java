@@ -23,9 +23,13 @@ import com.anysoft.util.PropertiesConstants;
  *
  */
 public class RMQDescTopic extends RMQAdminOperation {
+	//主题名称
 	protected String topic = "";
+	
+	//查看topic路由还是统计信息，route为路由，status为统计信息
 	protected String type = "status";
-	protected boolean ignoreException;
+	
+	protected boolean ignoreException=false;
 	protected String tag = "data";
 
 	public RMQDescTopic(String tag, Logiclet p) {
@@ -39,7 +43,7 @@ public class RMQDescTopic extends RMQAdminOperation {
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
 		type = PropertiesConstants.getRaw(p, "type", type);
 		tag = PropertiesConstants.getRaw(p, "tag", tag);
-		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
+		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", ignoreException);
 	}
 
 	@Override
@@ -51,11 +55,11 @@ public class RMQDescTopic extends RMQAdminOperation {
 			switch (type) {
 			case "status":
 				TopicStatsTable table = adminConn.topicStatus(topicValue, ignoreException);
-				root.put(tag, table.toJson());
+				root.put(tag, table);
 				break;
 			case "route":
 				TopicRouteData route = adminConn.topicRoute(topicValue, ignoreException);
-				root.put(tag, route.toJson());
+				root.put(tag, route);
 				break;
 			default:
 				break;

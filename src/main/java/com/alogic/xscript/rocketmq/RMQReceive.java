@@ -27,13 +27,17 @@ import com.jayway.jsonpath.spi.JsonProviderFactory;
  */
 public class RMQReceive extends Segment implements MessageListenerConcurrently{
 	/**
-	 * producer的cid
+	 * consumer的pid
 	 */
 	private String pid = "$consumer-conn";
+	// pull模式接收消息的条数
 	protected int size = 1;
+	//返回数据的标签
 	protected String tag = "data";
+	//是否忽略异常
 	protected boolean ignoreException=false;
 	
+	//onExecute函数的参数
 	protected Map<String, Object> rootPara;
 	protected Map<String, Object> currentPara;
 	protected LogicletContext ctxPara;
@@ -55,7 +59,7 @@ public class RMQReceive extends Segment implements MessageListenerConcurrently{
 		size = PropertiesConstants.getInt(p, "size",
 				size);
 		tag = PropertiesConstants.getRaw(p, "tag", tag);
-		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
+		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", ignoreException);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ import com.anysoft.util.PropertiesConstants;
  *
  */
 public class RMQListTopic extends RMQAdminOperation {
-	protected boolean ignoreException = true;
+	protected boolean ignoreException = false;
 	protected String tag = "data";
 
 	public RMQListTopic(String tag, Logiclet p) {
@@ -33,7 +33,7 @@ public class RMQListTopic extends RMQAdminOperation {
 		super.configure(p);
 		
 		tag = PropertiesConstants.getRaw(p, "tag", tag);
-		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", true);
+		ignoreException = PropertiesConstants.getBoolean(p, "ignoreException", ignoreException);
 	}
 
 	@Override
