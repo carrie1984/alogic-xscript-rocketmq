@@ -25,17 +25,15 @@ com.alogic.xscript.rocketmq.admin.RMQUpdateTopic
 ```xml
 
 	<?xml version="1.0"?>
-	
 	<script>
+		<!-- 引用mq-rocket指令的实现类 -->
+		<using xmlTag="mq-rocket" module="com.alogic.xscript.rocketmq.MQRocket" />
 	
-		<using xmlTag="admin-conn" module="com.alogic.xscript.rocketmq.admin.RMQAdminConn" />
-
-		<admin-conn connectString="127.0.0.1:9876">	
-	
-			<alter-topic topic="testXscript" perm="2" readQueueNums="2" writeQueueNums="2" addr="127.0.0.1:10911"></alter-topic>
-	
-		</admin-conn>
-
-	</script>
+		<mq-rocket>
+			<mq-admin server="127.0.0.1:9876">
+				<alter-topic topic="testXscript" perm="2" readQueueNums="2" writeQueueNums="2" addr="127.0.0.1:10911"></alter-topic>
+			</mq-admin>
+		</mq-rocket>
+    </script>
 
 ```

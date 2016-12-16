@@ -37,7 +37,7 @@ public class Demo {
 		settings.addSettings(new CommandLine(args));		
 		settings.addSettings("java:///conf/settings.xml#Demo", null, Settings.getResourceFactory());
 		
-		run("java:///xscript/SendRecv.xml#Demo",settings);
+		run("java:///xscript/Demo.xml#Demo",settings);
 		//run("java:///xscript/Admin.xml#Demo",settings);
 	}
 

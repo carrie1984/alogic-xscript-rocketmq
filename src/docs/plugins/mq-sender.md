@@ -1,11 +1,11 @@
-prod-conn
+mq-sender
 ============
 
-prod-conn用于创建一个Producer连接。
+mq-sender用于创建一个Producer连接。
 
 ### 实现类
 
-com.alogic.xscript.rocketmq.RMQProdConn
+com.alogic.xscript.rocketmq.RMQSender
 
 ### 配置参数
 
@@ -13,7 +13,7 @@ com.alogic.xscript.rocketmq.RMQProdConn
 
 | 编号 | 代码 | 说明 |
 | ---- | ---- | ---- |
-| 1 | cid | connector的上下文对象id，缺省值为$prod-conn |
+| 1 | cid | connector的上下文对象id，缺省值为$mq-sender |
 | 2 | server | NameServer的连接地址：[ip:port]，缺省值为${server}，多个地址以“;”分隔 |
 | 3 | producerGroup | 生产者组名 |
 
@@ -38,11 +38,14 @@ com.alogic.xscript.rocketmq.RMQProdConn
 
 	<?xml version="1.0"?>
 	<script>
+		<!-- 引用mq-rocket指令的实现类 -->
+		<using xmlTag="mq-rocket" module="com.alogic.xscript.rocketmq.MQRocket" />
 	
-		<using xmlTag="prod-conn" module="com.alogic.xscript.rocketmq.RMQProdConn" />
-		
-		<prod-conn server="127.0.0.1:9876" producerGroup="TestProducer" />
-		
+		<mq-rocket>
+			<!-- 连接生产者 -->
+			<mq-sender server="127.0.0.1:9876" producerGroup="TestProducer">
+			</mq-sender>
+		</mq-rocket>
 	</script>
 	
 ```

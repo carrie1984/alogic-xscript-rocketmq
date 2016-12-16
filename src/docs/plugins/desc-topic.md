@@ -23,17 +23,19 @@ com.alogic.xscript.rocketmq.admin.RMQDescTopic
 ```xml
 
 	<?xml version="1.0"?>
-	
 	<script>
+		<!-- 引用mq-rocket指令的实现类 -->
+		<using xmlTag="mq-rocket" module="com.alogic.xscript.rocketmq.MQRocket" />
 	
-		<using xmlTag="admin-conn" module="com.alogic.xscript.rocketmq.admin.RMQAdminConn" />
-
-		<admin-conn connectString="127.0.0.1:9876">	
-	
-			<desc-topic topic="testXscript" type="status" tag="descTopic"></desc-topic>
-	
-		</admin-conn>
-
-	</script>
+		<mq-rocket>
+		
+			<mq-admin server="127.0.0.1:9876">
+			
+				<desc-topic topic="testXscript" type="status" tag="descTopic"></desc-topic>
+				
+			</mq-admin>
+			
+		</mq-rocket>
+    </script>
 
 ```

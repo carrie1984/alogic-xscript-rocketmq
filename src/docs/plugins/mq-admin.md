@@ -1,7 +1,7 @@
-admin-conn
+mq-admin
 ============
 
-admin-conn用于创建一个Admin连接。
+mq-admin用于创建一个Admin连接。
 
 ### 实现类
 
@@ -35,12 +35,14 @@ com.alogic.xscript.rocketmq.admin.RMQAdminConn
 ```xml
 
 	<?xml version="1.0"?>
-	<script>
+		<script>
+			<!-- 引用mq-rocket指令的实现类 -->
+			<using xmlTag="mq-rocket" module="com.alogic.xscript.rocketmq.MQRocket" />
 	
-		<using xmlTag="admin-conn" module="com.alogic.xscript.rocketmq.admin.RMQAdminConn" />
-
-		<admin-conn connectString="127.0.0.1:9876"/>	
-		
-	</script>
-	
+			<mq-rocket>
+				<mq-admin server="127.0.0.1:9876">
+				</mq-admin>
+			</mq-rocket>
+	    </script>
+	    
 ```

@@ -21,17 +21,19 @@ com.alogic.xscript.rocketmq.admin.RMQListTopic
 ```xml
 
 	<?xml version="1.0"?>
-	
 	<script>
+		<!-- 引用mq-rocket指令的实现类 -->
+		<using xmlTag="mq-rocket" module="com.alogic.xscript.rocketmq.MQRocket" />
 	
-		<using xmlTag="admin-conn" module="com.alogic.xscript.rocketmq.admin.RMQAdminConn" />
-
-		<admin-conn connectString="127.0.0.1:9876">	
-	
-			<list-topic></list-topic>
-	
-		</admin-conn>
-
-	</script>
+		<mq-rocket>
+		
+			<mq-admin server="127.0.0.1:9876">
+			
+				<list-topic></list-topic>
+				
+			</mq-admin>
+			
+		</mq-rocket>
+    </script>
 
 ```

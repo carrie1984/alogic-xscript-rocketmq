@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<script>
+	<!-- 引用mq-rocket指令的实现类 -->
+	<using xmlTag="mq-rocket" module="com.alogic.xscript.rocketmq.MQRocket" />
+	
+	<mq-rocket>
+		<!-- 连接生产者 -->
+		<mq-sender server="127.0.0.1:9876" producerGroup="TestProducer">
+		
+			<!-- 发送消息 -->
+			<mq-send topic="test" tags="" key="" data="hello"></mq-send>
+			<mq-send topic="test" tags="" key="" data="hahhaha"></mq-send>
+			<mq-send topic="test" tags="" key="" data="hohoho"></mq-send>
+			
+		</mq-sender>
+		
+		<!-- 连接pull消费者 -->
+		<mq-puller server="127.0.0.1:9876" topic="test"
+		consumerGroup="TestConsumer" tags="*">
+			<!-- 接收消息 -->
+			<mq-pull id="msg">
+				<!-- 调用子指令，对消息进行处理 -->
+				<get id="${msg}" value="${msg}"></get>
+			</mq-pull>
+		</mq-puller>
+		
+		<!-- 连接消费者 -->
+		<mq-pusher server="127.0.0.1:9876" topic="test"
+		consumerGroup="TestConsumer" tags="*">
+			<!-- 接收消息 -->
+			<mq-push id="msg">
+				<!-- 调用子指令，对消息进行处理 -->
+				<get id="${msg}" value="${msg}"></get>
+			</mq-push>
+			<mq-wait timeout="2000"/>
+		</mq-pusher>
+		
+		<mq-admin server="127.0.0.1:9876">
+			<!-- 创建主题 -->
+			<create-topic topic="testXscript" perm="4" readQueueNums="1"
+			writeQueueNums="1" addr="127.0.0.1:10911"></create-topic>
+
+			<!-- 查询主题列表 -->
+			<list-topic tag="listAfterCreate"></list-topic>
+		
+			<!-- 描述主题状态 -->
+			<desc-topic tag="topicStatus1" topic="testXscript" type="status"></desc-topic>
+		
+			<!-- 描述主题路由 -->
+			<desc-topic tag="topicRoute" topic="testXscript" type="route"></desc-topic>
+
+			<!-- 修改主题 -->
+			<alter-topic topic="testXscript" perm="2" readQueueNums="2"
+			writeQueueNums="2" addr="127.0.0.1:10911"></alter-topic>
+
+			<!-- 查看修改后的主题属性 -->
+			<desc-topic tag="topicRoute2"  topic="testXscript" type="route"></desc-topic>
+		
+			<!-- 删除主题 -->
+			<del-topic topic="testXscript" type="nameServer" addrs="127.0.0.1:9876"></del-topic>
+		
+			<!-- 查看主题列表，确认主题是否被删除 -->
+			<list-topic tag="listAfterDelete"></list-topic>
+		</mq-admin>
+		
+	</mq-rocket>
+	
+</script>
+

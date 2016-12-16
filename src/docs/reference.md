@@ -3,14 +3,19 @@ alogic-xcript-rocketmq参考
 
 alogic-xscript-rocketmq插件包括：
 
-- 生产者[查看操作](
-	- [生产者连接prod-conn](plugins/prod-conn.md)
-	- [发送消息send](plugins/send.md)
+- 命名空间
+	- [命名空间mq-rocket](plugins/mq-rocket.md)
+- 生产者
+	- [生产者连接mq-sender](plugins/mq-sender.md)
+	- [发送消息mq-send](plugins/mq-send.md)
 - 消费者
-	- [消费者连接consumer-conn](plugins/consumer-conn.md)
-	- [接收消息receive](plugins/receive.md)
-- 管理者[查看案例](plugins/case.admin.md)
-	- [管理者连接admin-conn](plugins/admin-conn.md)
+	- [push消费者连接mq-pusher](plugins/mq-pusher.md)
+	- [push接收消息mq-push](plugins/mq-push.md)
+	- [push睡眠mq-wait](plugins/mq-wait.md)
+	- [pull消费者连接mq-puller](plugins/mq-puller.md)
+	- [pull接收消息mq-pull](plugins/mq-pull.md)
+- 管理者
+	- [管理者连接mq-admin](plugins/mq-admin.md)
 	- [创建主题create-topic](plugins/create-topic.md)
 	- [修改主题alter-topic](plugins/alter-topic.md)
 	- [描述主题desc-topic](plugins/desc-topic.md)

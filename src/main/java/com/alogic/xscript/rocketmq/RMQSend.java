@@ -25,7 +25,7 @@ public class RMQSend extends AbstractLogiclet{
 	/**
 	 * producer的cid
 	 */
-	private String pid = "$prod-conn";
+	private String pid = "$mq-sender";
 	
 	protected String topic = "test";
 	protected String tags = "default";

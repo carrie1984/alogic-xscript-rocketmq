@@ -11,14 +11,14 @@ import com.alogic.xscript.rocketmq.util.ProduerConnector;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
-public class RMQProdConn extends Segment{
-	protected String cid = "$prod-conn";
+public class RMQSender extends Segment{
+	protected String cid = "$mq-sender";
 	protected String server = "${server}";
 	protected String producerGroup = "${producer.group}";
 	
-	public RMQProdConn(String tag, Logiclet p) {
+	public RMQSender(String tag, Logiclet p) {
 		super(tag, p);	
-		registerModule("send",RMQSend.class);
+		registerModule("mq-send",RMQSend.class);
 	}
 
 	@Override
